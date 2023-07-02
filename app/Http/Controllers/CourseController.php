@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseSaveResqeust;
+use App\Http\Requests\CourseUpdateResqeust;
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -14,17 +17,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $result = Course::where('state', 'ACTIVE')->get();
+        return CourseResource::collection( $result);
     }
 
     /**
@@ -33,9 +27,11 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CourseSaveResqeust $request)
     {
-        //
+        $course = Course::create($request->all());
+
+        return new CourseResource($course);
     }
 
     /**
@@ -46,18 +42,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Course $course)
-    {
-        //
+        return new CourseResource($course);
     }
 
     /**
@@ -67,9 +52,11 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course)
+    public function update(CourseUpdateResqeust $request, Course $course)
     {
-        //
+        $course->update($request->all());
+
+        return new CourseResource($course);
     }
 
     /**
@@ -80,6 +67,8 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        if($course) $course->update(['state' => 'DELETE']);
+
+        return response()->noContent();
     }
 }

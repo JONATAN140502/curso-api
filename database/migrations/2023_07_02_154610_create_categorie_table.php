@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->unsignedInteger('id')->autoIncrement();
             $table->string('name');
-             $table->enum('state',['ACTIVE','DELETE'])->default('ACTIVE');
+            $table->enum('state', ['ACTIVE', 'DELETE'])->default('ACTIVE');
             $table->timestamps();
         });
     }
