@@ -27,9 +27,13 @@ use Illuminate\Support\Facades\Route;
 //     Route::post('/destroy', 'App\Http\Controllers\CategorieController@destroy')->name('categorie.destroy');
     
 // });
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::apiResource('category', CategoryController::class);
-Route::apiResource('course', CourseController::class);
+Route::middleware(['auth:api'])->group(function () {
+    Route::apiResource('category', CategoryController::class);
+    Route::apiResource('course', CourseController::class);
+});
+// Route::apiResource('category', CategoryController::class);
+//     Route::apiResource('course', CourseController::class);
